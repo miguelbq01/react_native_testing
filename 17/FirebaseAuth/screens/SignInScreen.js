@@ -24,6 +24,18 @@ export default class SigninScreen extends React.Component {
     header: null
   };
 
+  signInUser = (email, password) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.props.navigation.replace("Home");
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  };
+
   render() {
     return (
       <KeyboardAvoidingView behavior="position" enabled>
@@ -51,7 +63,14 @@ export default class SigninScreen extends React.Component {
               onChangeText={password => this.setState({ password })}
             />
           </Item>
-          <Button style={styles.button} full rounded onPress={() => {}}>
+          <Button
+            style={styles.button}
+            full
+            rounded
+            onPress={() => {
+              this.signInUser(this.state.email, this.state.password);
+            }}
+          >
             <Text style={styles.buttonText}>Sign in</Text>
           </Button>
         </Form>

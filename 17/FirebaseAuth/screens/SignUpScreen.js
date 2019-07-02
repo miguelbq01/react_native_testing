@@ -25,6 +25,25 @@ export default class SignupScreen extends React.Component {
     header: null
   };
 
+  signupUser = (name, email, password) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(authenticate => {
+        return authenticate.user
+          .updateProfile({ displayName: name })
+          .then(() => {
+            this.props.navigation.replace("Home");
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  };
+
   render() {
     return (
       <KeyboardAvoidingView behavior="position" enabled>
@@ -61,7 +80,18 @@ export default class SignupScreen extends React.Component {
               onChangeText={password => this.setState({ password })}
             />
           </Item>
-          <Button style={styles.button} full rounded onPress={() => {}}>
+          <Button
+            style={styles.button}
+            full
+            rounded
+            onPress={() => {
+              this.signupUser(
+                this.state.name,
+                this.state.email,
+                this.state.password
+              );
+            }}
+          >
             <Text style={styles.buttonText}>Sign Up</Text>
           </Button>
         </Form>
