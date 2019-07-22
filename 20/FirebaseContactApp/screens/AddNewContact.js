@@ -175,7 +175,7 @@ export default class AddNewContact extends Component {
             </TouchableOpacity>
 
             <Form>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>First Name</Label>
                 <Input
                   autoCorrect={false}
@@ -184,7 +184,7 @@ export default class AddNewContact extends Component {
                   onChangeText={fname => this.setState({ fname })}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Last Name</Label>
                 <Input
                   autoCorrect={false}
@@ -193,7 +193,7 @@ export default class AddNewContact extends Component {
                   onChangeText={lname => this.setState({ lname })}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Phone</Label>
                 <Input
                   autoCorrect={false}
@@ -202,7 +202,7 @@ export default class AddNewContact extends Component {
                   onChangeText={phone => this.setState({ phone })}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Email</Label>
                 <Input
                   autoCorrect={false}
@@ -211,7 +211,7 @@ export default class AddNewContact extends Component {
                   onChangeText={email => this.setState({ email })}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Address</Label>
                 <Input
                   autoCorrect={false}
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     margin: 10
   },
   button: {
-    backgroundColor: "#B83227",
+    backgroundColor: "darkcyan",
     marginTop: 40
   },
   buttonText: {

@@ -10,27 +10,35 @@ import EditContact from "./screens/EditContact";
 import * as firebase from "firebase";
 
 // set up react navigation
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import {
+  createStackNavigator,
+  createAppContainer
+} from "react-navigation";
 
-const MainNavigator = createStackNavigator(
-  {
-    Home: { screen: HomeScreen },
-    Add: { screen: AddNewContact },
-    View: { screen: ViewContact },
-    Edit: { screen: EditContact }
+const MainNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen
   },
-  {
-    defaultNavigationOptions: {
-      headerTintColor: "#fff",
-      headerStyle: {
-        backgroundColor: "#B83227"
-      },
-      headerTitleStyle: {
-        color: "#fff"
-      }
+  Add: {
+    screen: AddNewContact
+  },
+  View: {
+    screen: ViewContact
+  },
+  Edit: {
+    screen: EditContact
+  }
+}, {
+  defaultNavigationOptions: {
+    headerTintColor: "#fff",
+    headerStyle: {
+      backgroundColor: "darkcyan"
+    },
+    headerTitleStyle: {
+      color: "#fff"
     }
   }
-);
+});
 
 const App = createAppContainer(MainNavigator);
 

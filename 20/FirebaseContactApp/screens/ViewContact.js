@@ -16,6 +16,7 @@ import { Card, CardItem } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
 //TODO: add firebase
+import * as firebase from "firebase";
 
 export default class ViewContact extends Component {
   static navigationOptions = {
@@ -43,7 +44,28 @@ export default class ViewContact extends Component {
   }
 
   //TODO: get contact from firebase
-  getContact = key => {};
+  getContact = async key => {
+    let self = this;
+    let contactRef = firebase
+      .database()
+      .ref()
+      .child(key);
+    await contactRef.on("value", dataSnapshot => {
+      if (dataSnapshot.val()) {
+        contactValue = dataSnapshot.val();
+        self.setState({
+          fname: contactValue.fname,
+          lname: contactValue.lname,
+          phone: contactValue.phone,
+          email: contactValue.email,
+          address: contactValue.address,
+          imageUrl: contactValue.imageUrl,
+          key: key,
+          isLoading: false
+        });
+      }
+    });
+  };
 
   //This was already explained in AsyncStorage section
   callAction = phone => {
@@ -93,7 +115,32 @@ export default class ViewContact extends Component {
   };
 
   //TODO:  deleteContact method
-  deleteContact = key => {};
+  deleteContact = key => {
+    Alert.alert(
+      "Delete Contact",
+      `${this.state.fname} ${this.state.lname}`,
+      [
+        { text: "Cancel", onPress: () => console.log("Cancelled pressed") },
+        {
+          text: "OK",
+          onPress: async () => {
+            let contactRef = firebase
+              .database()
+              .ref()
+              .child(key);
+            await contactRef.remove(error => {
+              if (!error) {
+                this.props.navigation.goBack();
+              }
+            });
+          }
+        }
+      ],
+      {
+        cancelable: false
+      }
+    );
+  };
 
   // editContact function
   editContact = key => {
@@ -115,7 +162,7 @@ export default class ViewContact extends Component {
             justifyContent: "center"
           }}
         >
-          <ActivityIndicator size="large" color="#B83227" />
+          <ActivityIndicator size="large" color="darkcyan" />
           <Text style={{ textAlign: "center" }}>
             Contact loading please wait..
           </Text>
@@ -175,7 +222,7 @@ export default class ViewContact extends Component {
                 this.smsAction(this.state.phone);
               }}
             >
-              <Entypo name="message" size={50} color="#B83227" />
+              <Entypo name="message" size={50} color="darkcyan" />
             </TouchableOpacity>
           </CardItem>
           <CardItem style={styles.actionButton} bordered>
@@ -184,7 +231,7 @@ export default class ViewContact extends Component {
                 this.callAction(this.state.phone);
               }}
             >
-              <Entypo name="phone" size={50} color="#B83227" />
+              <Entypo name="phone" size={50} color="darkcyan" />
             </TouchableOpacity>
           </CardItem>
         </Card>
@@ -196,7 +243,7 @@ export default class ViewContact extends Component {
                 this.editContact(this.state.key);
               }}
             >
-              <Entypo name="edit" size={30} color="#B83227" />
+              <Entypo name="edit" size={30} color="darkcyan" />
               <Text style={styles.actionText}>Edit</Text>
             </TouchableOpacity>
           </CardItem>
@@ -206,7 +253,7 @@ export default class ViewContact extends Component {
                 this.deleteContact(this.state.key);
               }}
             >
-              <Entypo name="trash" size={30} color="#B83227" />
+              <Entypo name="trash" size={30} color="darkcyan" />
               <Text style={styles.actionText}>Delete</Text>
             </TouchableOpacity>
           </CardItem>
@@ -257,7 +304,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   actionText: {
-    color: "#B83227",
+    color: "darkcyan",
     fontWeight: "900"
   }
 });

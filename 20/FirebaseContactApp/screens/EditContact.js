@@ -14,6 +14,7 @@ import {
 } from "react-native";
 
 //TODO: Add UUID
+import uuid from "uuid";
 
 import { ImagePicker } from "expo";
 
@@ -22,6 +23,7 @@ import { Form, Item, Input, Label, Button } from "native-base";
 import { Header } from "react-navigation";
 
 //TODO: add firebase
+import * as firebase from "firebase";
 
 export default class EditContact extends Component {
   static navigationOptions = {
@@ -50,16 +52,113 @@ export default class EditContact extends Component {
     this.getContact(key);
   }
   //TODO: getContact  method
-  getContact = key => {};
+  getContact = async key => {
+    let self = this;
+    let contactRef = firebase
+      .database()
+      .ref()
+      .child(key);
+    await contactRef.on("value", dataSnapshot => {
+      if (dataSnapshot.val()) {
+        contactValue = dataSnapshot.val();
+        self.setState({
+          fname: contactValue.fname,
+          lname: contactValue.lname,
+          phone: contactValue.phone,
+          email: contactValue.email,
+          address: contactValue.address,
+          imageUrl: contactValue.imageUrl,
+          key: key,
+          isLoading: false
+        });
+      }
+    });
+  };
 
   //TODO: update contact method
-  updateContact = key => {};
+  updateContact = async key => {
+    if (
+      this.state.fname !== "" &&
+      this.state.lname !== "" &&
+      this.state.phone !== "" &&
+      this.state.email !== "" &&
+      this.state.address !== ""
+    ) {
+      this.setState({ isUploading: true });
+      const dbReference = firebase.database().ref();
+      const storageRef = firebase.storage().ref();
+
+      if (this.state.image !== "empty") {
+        const downloadUrl = await this.uploadImageAsync(
+          this.state.image,
+          storageRef
+        );
+        this.setState({ imageDownloadUrl: downloadUrl });
+      }
+
+      var contact = {
+        fname: this.state.fname,
+        lname: this.state.lname,
+        phone: this.state.phone,
+        email: this.state.email,
+        address: this.state.address,
+        imageUrl: this.state.imageDownloadUrl
+      };
+
+      await dbReference.child(key).set(contact, error => {
+        if (!error) {
+          return this.props.navigation.goBack();
+        }
+      });
+    }
+  };
 
   //TODO: pick image from gallery
-  pickImage = async () => {};
+  pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      quality: 0.2,
+      base64: true,
+      allowsEditing: true,
+      aspect: [1, 1]
+    });
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
 
   //TODO: upload to firebase
-  uploadImageAsync = (uri, storageRef) => {};
+  uploadImageAsync = async (uri, storageRef) => {
+    const parts = uri.split(".");
+    const fileExtension = parts[parts.length - 1];
+
+    // creating a blob
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function(e) {
+        console.log(e);
+        reject(new TypeError("Network Request Failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+
+      xhr.send(null);
+    });
+
+    // send to firebase
+    const ref = storageRef
+      .child("ContactImages")
+      .child(uuid.v4() + "." + fileExtension);
+    const snapshot = await ref.put(blob);
+
+    // close the blob
+    blob.close();
+
+    return await snapshot.ref.getDownloadURL();
+  };
 
   // render method
   render() {
@@ -70,7 +169,7 @@ export default class EditContact extends Component {
         >
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
-            Contact Updateing please wait..
+            Contact Updating please wait..
           </Text>
         </View>
       );
@@ -105,7 +204,7 @@ export default class EditContact extends Component {
               />
             </TouchableOpacity>
             <Form>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>First Name</Label>
                 <Input
                   autoCorrect={false}
@@ -118,7 +217,7 @@ export default class EditContact extends Component {
                   }
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Last Name</Label>
                 <Input
                   autoCorrect={false}
@@ -128,7 +227,7 @@ export default class EditContact extends Component {
                   value={this.state.lname}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Phone</Label>
                 <Input
                   autoCorrect={false}
@@ -138,7 +237,7 @@ export default class EditContact extends Component {
                   value={this.state.phone}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Email</Label>
                 <Input
                   autoCorrect={false}
@@ -148,7 +247,7 @@ export default class EditContact extends Component {
                   value={this.state.email}
                 />
               </Item>
-              <Item style={styles.inputItem} floatingLabel>
+              <Item style={styles.inputItem}>
                 <Label>Address</Label>
                 <Input
                   autoCorrect={false}

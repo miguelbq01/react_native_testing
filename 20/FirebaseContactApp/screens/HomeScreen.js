@@ -43,10 +43,31 @@ export default class HomeScreen extends React.Component {
     let contactRef = firebase.database().ref();
     contactRef.on("value", dataSnapshot => {
       if (dataSnapshot.val()) {
+        let contactResult = Object.values(dataSnapshot.val());
+        let contactKey = Object.keys(dataSnapshot.val());
+        contactKey.forEach((value, key) => {
+          contactResult[key]["key"] = value;
+        });
+
+        self.setState({
+          data: contactResult.sort((a, b) => {
+            var nameA = a.fname.toUpperCase();
+            var nameB = b.fname.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA < nameB) {
+              return 1;
+            }
+            return 0;
+          }),
+          isListEmpty: false
+        });
+      } else {
+        self.setState({ isListEmpty: true });
       }
+      self.setState({ isLoading: false });
     });
-    //TODO:
-    // sort array by fname and set it to data state
   };
 
   // render method
@@ -170,7 +191,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
     height: 60,
-    backgroundColor: "#B83227",
+    backgroundColor: "darkcyan",
     borderRadius: 100
   }
 });
