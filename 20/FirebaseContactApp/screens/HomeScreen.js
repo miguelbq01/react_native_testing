@@ -13,6 +13,7 @@ import {
 import { Card } from "native-base";
 //import Entypo icons from @expo
 import { Entypo } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 //TODO: add firebase
 import * as firebase from "firebase";
@@ -78,6 +79,12 @@ export default class HomeScreen extends React.Component {
         <View
           style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
         >
+          <LinearGradient
+            colors={["#4c669f", "#3b5998", "#192f6a"]}
+            style={styles.linearGradient}
+          >
+            <Text style={styles.buttonText}>Sign in with Facebook</Text>
+          </LinearGradient>
           <ActivityIndicator size="large" color="#B83227" />
           <Text style={{ textAlign: "center" }}>
             Contacts loading please wait..
@@ -90,6 +97,12 @@ export default class HomeScreen extends React.Component {
         <View
           style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
         >
+          <LinearGradient
+            colors={["#4c669f", "#3b5998", "#192f6a"]}
+            style={styles.linearGradient}
+          >
+            <Text style={styles.buttonText}>Sign in with Facebook</Text>
+          </LinearGradient>
           <Entypo style={{ alignSelf: "center" }} name="plus" size={35} />
           <Text style={{ textAlign: "center" }}>No Contacts please Add</Text>
           <TouchableOpacity
@@ -108,40 +121,45 @@ export default class HomeScreen extends React.Component {
     // return list of contacts
     return (
       <View style={styles.container}>
-        <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  //navigate to view contact screen with passing key
-                  this.props.navigation.navigate("View", {
-                    key: item.key
-                  });
-                }}
-              >
-                <Card style={styles.listItem}>
-                  <View>
-                    <Image
-                      style={styles.contactIcon}
-                      source={
-                        item.imageUrl === "empty"
-                          ? require("../assets/person.png")
-                          : { uri: item.imageUrl }
-                      }
-                    />
-                  </View>
-                  <View style={styles.infoContainer}>
-                    <Text style={styles.infoText}>
-                      {item.fname} {item.lname}
-                    </Text>
-                    <Text style={styles.infoText}>{item.phone}</Text>
-                  </View>
-                </Card>
-              </TouchableOpacity>
-            );
-          }}
-        />
+        <LinearGradient
+          colors={["#4c669f", "#3b5998", "#192f6a"]}
+          style={styles.linearGradient}
+        >
+          <FlatList
+            data={this.state.data}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    //navigate to view contact screen with passing key
+                    this.props.navigation.navigate("View", {
+                      key: item.key
+                    });
+                  }}
+                >
+                  <Card style={styles.listItem}>
+                    <View>
+                      <Image
+                        style={styles.contactIcon}
+                        source={
+                          item.imageUrl === "empty"
+                            ? require("../assets/person.png")
+                            : { uri: item.imageUrl }
+                        }
+                      />
+                    </View>
+                    <View style={styles.infoContainer}>
+                      <Text style={styles.infoText}>
+                        {item.fname} {item.lname}
+                      </Text>
+                      <Text style={styles.infoText}>{item.phone}</Text>
+                    </View>
+                  </Card>
+                </TouchableOpacity>
+              );
+            }}
+          />
+        </LinearGradient>
 
         <TouchableOpacity
           onPress={() => {
@@ -193,5 +211,19 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "darkcyan",
     borderRadius: 100
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5
+  },
+  buttonText: {
+    fontSize: 18,
+    fontFamily: "Gill Sans",
+    textAlign: "center",
+    margin: 10,
+    color: "#ffffff",
+    backgroundColor: "transparent"
   }
 });

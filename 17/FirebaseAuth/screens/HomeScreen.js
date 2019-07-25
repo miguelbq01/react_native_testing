@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "native-base";
 import * as firebase from "firebase";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -43,25 +44,29 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image source={require("../assets/logo.png")} />
-          <Text>LearnCodeOnline.in</Text>
-        </View>
-        <View style={styles.userDetails}>
-          <Text> Hey {this.state.name} </Text>
-          <Text> Your are signed in as: {this.state.email} </Text>
-        </View>
-        <Button
-          style={styles.button}
-          full
-          rounded
-          success
-          onPress={() => {
-            this.signOutUser();
-          }}
+        <LinearGradient
+          colors={["#6388f2", "#8763f2", "#6388f2"]}
+          style={styles.linearGradient}
         >
-          <Text style={styles.buttonText}>SignOut</Text>
-        </Button>
+          <View style={styles.logoContainer}>
+            <Image source={require("../assets/logo.png")} />
+          </View>
+          <View style={styles.userDetails}>
+            <Text> Hey {this.state.name} </Text>
+            <Text> Your are signed in as: {this.state.email} </Text>
+          </View>
+          <Button
+            style={styles.button}
+            full
+            rounded
+            success
+            onPress={() => {
+              this.signOutUser();
+            }}
+          >
+            <Text style={styles.buttonText}>SignOut</Text>
+          </Button>
+        </LinearGradient>
       </View>
     );
   }
@@ -70,14 +75,14 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     margin: 20
   },
   logoContainer: {
     alignItems: "center",
     marginTop: 100,
-    marginBottom: 100
+    marginBottom: 100,
+    width: 5
   },
   userDetails: {},
 
@@ -86,5 +91,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff"
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5
+  },
+  buttonText: {
+    fontSize: 18,
+    fontFamily: "Gill Sans",
+    textAlign: "center",
+    margin: 10,
+    color: "#ffffff",
+    backgroundColor: "transparent"
   }
 });
