@@ -52,22 +52,23 @@ export default class SigninScreen extends React.Component {
           </View>
           <Form style={styles.form}>
             <Item floatingLabel>
-              <Label style={styles.label}>Email</Label>
+              <Label style={styles.whiteText}>Email</Label>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 onChangeText={email => this.setState({ email })}
+                style={styles.whiteText}
               />
             </Item>
             <Item floatingLabel>
-              <Label style={styles.label}>Password</Label>
+              <Label style={styles.whiteText}>Password</Label>
               <Input
-                secureTextEntry={true}
                 autoCorrect={false}
                 autoCapitalize="none"
-                keyboardType="email-address"
                 onChangeText={password => this.setState({ password })}
+                style={styles.whiteText}
+                secureTextEntry={true}
               />
             </Item>
             <Button
@@ -78,17 +79,16 @@ export default class SigninScreen extends React.Component {
                 this.signInUser(this.state.email, this.state.password);
               }}
             >
-              <Text style={styles.buttonText}>Sign in</Text>
+              <Text style={styles.buttonText}>Iniciar Sesion</Text>
             </Button>
           </Form>
           <View style={styles.footer}>
-            <Text style={styles.label}>OR</Text>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("SignUp");
               }}
             >
-              <Text style={styles.label}>Create a new Account?</Text>
+              <Text style={styles.whiteText}>Crear una nueva cuenta?</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: 150,
-    marginBottom: 50
+    marginBottom: 10
   },
   logoImage: {
     width: 260,
@@ -128,18 +128,16 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
     paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5
+    paddingRight: 15
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: "Gill Sans",
     textAlign: "center",
     margin: 10,
     color: "#ffffff",
     backgroundColor: "transparent"
   },
-  label: {
+  whiteText: {
     color: "#FFF"
   }
 });

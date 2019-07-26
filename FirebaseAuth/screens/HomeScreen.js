@@ -43,17 +43,22 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["#6388f2", "#8763f2", "#6388f2"]}
-          style={styles.linearGradient}
-        >
+      <LinearGradient
+        colors={["#6388f2", "#8763f2", "#6388f2"]}
+        style={styles.linearGradient}
+      >
+        <View style={styles.container}>
           <View style={styles.logoContainer}>
-            <Image source={require("../assets/logo.png")} />
+            <Image
+              style={styles.logoImage}
+              source={require("../assets/logo.png")}
+            />
           </View>
           <View style={styles.userDetails}>
-            <Text> Hey {this.state.name} </Text>
-            <Text> Your are signed in as: {this.state.email} </Text>
+            <Text style={styles.whiteText}> Hey {this.state.name} </Text>
+            <Text style={styles.whiteText}>
+              Your are signed in as: {this.state.email}
+            </Text>
           </View>
           <Button
             style={styles.button}
@@ -66,8 +71,8 @@ export default class HomeScreen extends React.Component {
           >
             <Text style={styles.buttonText}>SignOut</Text>
           </Button>
-        </LinearGradient>
-      </View>
+        </View>
+      </LinearGradient>
     );
   }
 }
@@ -80,9 +85,12 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: "center",
-    marginTop: 100,
-    marginBottom: 100,
-    width: 5
+    marginTop: 150,
+    marginBottom: 10
+  },
+  logoImage: {
+    width: 260,
+    height: 110
   },
   userDetails: {},
 
@@ -95,15 +103,16 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
     paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5
+    paddingRight: 15
   },
   buttonText: {
     fontSize: 18,
-    fontFamily: "Gill Sans",
     textAlign: "center",
     margin: 10,
     color: "#ffffff",
     backgroundColor: "transparent"
+  },
+  whiteText: {
+    color: "#FFF"
   }
 });

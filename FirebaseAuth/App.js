@@ -23,10 +23,18 @@ firebase.initializeApp(firebaseConfig);
 
 const MainNavigator = createStackNavigator(
   {
-    Loading: { screen: LoadingScreen },
-    SignIn: { screen: SigninScreen },
-    SignUp: { screen: SignupScreen },
-    Home: { screen: HomeScreen }
+    Loading: {
+      screen: LoadingScreen
+    },
+    SignIn: {
+      screen: SigninScreen
+    },
+    SignUp: {
+      screen: SignupScreen
+    },
+    Home: {
+      screen: HomeScreen
+    }
   },
   {
     //launcher screen
